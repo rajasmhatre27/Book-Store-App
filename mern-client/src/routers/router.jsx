@@ -1,6 +1,4 @@
-import {
-  createBrowserRouter
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Home from "../Home/Home";
 import Shop from "../Shop/Shop";
@@ -8,14 +6,12 @@ import About from "../components/About";
 import Blog from "../components/Blog";
 import SingleBook from "../Shop/SingleBook";
 import DashboardLayout from "../dashboard/DashboardLayout";
-
 import UploadBook from "../dashboard/UploadBook";
 import DashboardMain from "../dashboard/DashboardMain";
 import ManageBook from "../dashboard/ManageBook";
 import EditBook from "../dashboard/EditBook";
 import Signup from "../components/Signup";
 
-// Define the router with the future flag options correctly set in the options
 const router = createBrowserRouter(
   [
     {
@@ -23,11 +19,11 @@ const router = createBrowserRouter(
       element: <App />,
       children: [
         {
-          path: '/',
+          path: "/",
           element: <Home />
         },
         {
-          path: '/Shop',
+          path: "/shop", // Changed to lowercase for consistency
           element: <Shop />
         },
         {
@@ -42,44 +38,63 @@ const router = createBrowserRouter(
           path: "/book/:id",
           element: <SingleBook />,
           loader: async ({ params }) => {
-            const response = await fetch(`http://localhost:5000/book/${params.id}`);
-            return response.json(); // Directly returning the JSON response without checking if successful
+            try {
+              const response = await fetch(`http://localhost:5000/book/${params.id}`);
+              if (!response.ok) {
+                throw new Error('Failed to fetch book data');
+              }
+              return response.json();
+            } catch (error) {
+              console.error(error);
+              throw new Response("Error loading book data", { status: 500 });
+            }
           }
         }
       ]
     },
     {
-      path:"/admin/dashboard",
-      element: <DashboardLayout/>,
-      children:[
+      path: "/admin/dashboard",
+      element: <DashboardLayout />,
+      children: [
         {
-          path:"/admin/dashboard",
-          element: <DashboardMain/>
-
+          path: "/admin/dashboard",
+          element: <DashboardMain />
         },
         {
           path: "/admin/dashboard/upload",
-          element: <UploadBook/>
+          element: <UploadBook />
         },
         {
           path: "/admin/dashboard/manage",
-          element: <ManageBook/>
+          element: <ManageBook />
         },
         {
           path: "/admin/dashboard/edit-books/:id",
-          element: <EditBook/>,
-          loader: ({params}) => fetch(`http://localhost:5000/book/${params.id}`)
+          element: <EditBook />,
+          loader: async ({ params }) => {
+            try {
+              const response = await fetch(`http://localhost:5000/book/${params.id}`);
+              if (!response.ok) {
+                throw new Error('Failed to fetch book data');
+              }
+              return response.json();
+            } catch (error) {
+              console.error(error);
+              throw new Response("Error loading book data", { status: 500 });
+            }
+          }
         }
       ]
-    },{
-      path: "sign-up",
-      element: <Signup/>
+    },
+    {
+      path: "/sign-up",
+      element: <Signup />
     }
   ],
   {
     future: {
-      v7_relativeSplatPath: true,
-    },
+      v7_relativeSplatPath: true
+    }
   }
 );
 
