@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../contects/AuthProvider';
-
+import googlelogo from '../assets/BannerBooks/googlelogo.png'
 const Signup = () => {
-  const { createUser } = useContext(AuthContext);
+  const { createUser, loginwithGoogle } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -32,6 +32,14 @@ const Signup = () => {
         setSuccess("");
       });
   };
+
+  const handleRegistor = ()=>{
+    loginwithGoogle().then((result)=>{
+        const user = result.user;
+        alert("Sign up succesfully!")
+        navigate(from ,{replace:true})
+    })
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 flex flex-col justify-center sm:py-12">
@@ -77,6 +85,14 @@ const Signup = () => {
                   <button type="submit" className="bg-blue-500 text-white rounded-md px-2 py-1 hover:bg-blue-600">Submit</button>
                 </div>
               </form>
+            </div>
+
+            <hr />
+            <div className='flex w-full items-center flex-col mt-5 gap-3'>
+                <button 
+                className='block'
+                onClick={handleRegistor}
+                ><img src={googlelogo} className='w-12 h-12 inline-block ' alt="" />Login with Google</button>
             </div>
           </div>
         </div>

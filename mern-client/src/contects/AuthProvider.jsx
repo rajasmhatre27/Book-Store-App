@@ -1,10 +1,13 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import app from '../firebase/firebase.config';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, updateCurrentUser } from 'firebase/auth';
 
 // Create the context
 export const AuthContext = createContext();
 const auth = getAuth(app);
+const googleprovider = new GoogleAuthProvider();
+
+
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -25,11 +28,26 @@ const AuthProvider = ({ children }) => {
             });
     };
 
+    const loginwithGoogle=()=>{
+        setLoading(true)
+        return signInWithPopup(auth ,googleprovider)
+    } 
+    useEffect(()=>{
+        const unsubcribe =onAuthStateChanged(auth , currentUser =>{
+            console.log(currentUser)
+            setUser(currentUser)
+            setLoading(false)
+        })
+        return () => {
+            return unsubcribe();
+        }
+    },[])
+
     // Context value to be provided to the children
     const authInfo = {
         user,
-        loading,
-        createUser
+        createUser,
+        loginwithGoogle
     };
 
     return (
