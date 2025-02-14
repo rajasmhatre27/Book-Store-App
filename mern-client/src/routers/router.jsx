@@ -13,6 +13,7 @@ import EditBook from "../dashboard/EditBook";
 import Signup from "../components/Signup";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import Login from "../components/Login";
+import Logout from "../components/Logout";
 
 const router = createBrowserRouter(
   [
@@ -95,7 +96,11 @@ const router = createBrowserRouter(
     {
       path: "/login",
       element: <Login/>
+    }, {
+      path: "/logout",
+      element: <Logout/>
     }
+
   ],
   {
     future: {
