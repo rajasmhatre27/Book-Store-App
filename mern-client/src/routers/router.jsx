@@ -42,7 +42,7 @@ const router = createBrowserRouter(
           element: <SingleBook />,
           loader: async ({ params }) => {
             try {
-              const response = await fetch(`http://localhost:5000/book/${params.id}`);
+              const response = await fetch(`https://book-store-app-2jvh.onrender.com/book/${params.id}`);
               if (!response.ok) {
                 throw new Error('Failed to fetch book data');
               }
@@ -76,7 +76,7 @@ const router = createBrowserRouter(
           element: <EditBook />,
           loader: async ({ params }) => {
             try {
-              const response = await fetch(`http://localhost:5000/book/${params.id}`);
+              const response = await fetch(`https://book-store-app-2jvh.onrender.com/book/${params.id}`);
               if (!response.ok) {
                 throw new Error('Failed to fetch book data');
               }

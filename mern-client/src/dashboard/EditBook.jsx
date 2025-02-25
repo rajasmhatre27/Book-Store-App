@@ -48,7 +48,7 @@ const EditBook = () => {
     console.log(updatedBook); // Verify data before sending it to the backend
 
     // Update book data via API
-    fetch(`http://localhost:5000/book/${id}`, {
+    fetch(`https://book-store-app-2jvh.onrender.com/book/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
